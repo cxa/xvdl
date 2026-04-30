@@ -181,7 +181,7 @@ jobs:
           spctl --assess --type execute --verbose=4 "$APP_PATH"
 
           ditto -c -k --keepParent "$APP_PATH" "$FINAL_ZIP"
-          shasum -a 256 "$FINAL_ZIP" > "$CHECKSUM_FILE"
+          (cd "$(dirname "$FINAL_ZIP")" && shasum -a 256 "$(basename "$FINAL_ZIP")") > "$CHECKSUM_FILE"
 
           echo "FINAL_ZIP=$FINAL_ZIP" >> "$GITHUB_ENV"
           echo "CHECKSUM_FILE=$CHECKSUM_FILE" >> "$GITHUB_ENV"
