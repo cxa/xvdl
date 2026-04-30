@@ -50,6 +50,13 @@
   pointer-events: none;
 }
 
+.xvdl-spinner-icon {
+  display: none !important;
+  stroke-dasharray: 38;
+  stroke-dashoffset: 10;
+  transform-origin: center;
+}
+
 .xvdl-download-button:hover {
   background: rgba(29, 155, 240, 0.9);
   border-color: rgba(255, 255, 255, 0.45);
@@ -80,6 +87,15 @@
   transform: scale(0.94);
 }
 
+.xvdl-download-button--busy .xvdl-download-icon {
+  display: none;
+}
+
+.xvdl-download-button--busy .xvdl-spinner-icon {
+  animation: xvdl-spin 780ms linear infinite;
+  display: block !important;
+}
+
 .xvdl-download-button[data-xvdl-flash="done"] {
   background: rgba(0, 186, 124, 0.92);
   border-color: rgba(255, 255, 255, 0.5);
@@ -88,6 +104,12 @@
 .xvdl-download-button[data-xvdl-flash="error"] {
   background: rgba(244, 33, 46, 0.92);
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+@keyframes xvdl-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .xvdl-toast {

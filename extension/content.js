@@ -167,10 +167,13 @@
     button.setAttribute("aria-label", "Download video");
     button.title = "Download video";
     button.innerHTML = [
-      '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none">',
+      '<svg class="xvdl-download-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none">',
       '<path d="M12 3v11"/>',
       '<path d="m7 10 5 5 5-5"/>',
       '<path d="M5 20h14"/>',
+      "</svg>",
+      '<svg class="xvdl-spinner-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none">',
+      '<circle cx="12" cy="12" r="8"/>',
       "</svg>",
       "<span>XVDL</span>"
     ].join("");
