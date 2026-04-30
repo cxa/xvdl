@@ -1,0 +1,627 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		207D63772FA37BD300315F75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207D63762FA37BD300315F75 /* AppDelegate.swift */; };
+		207D637B2FA37BD300315F75 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 207D63792FA37BD300315F75 /* Main.html */; };
+		207D637D2FA37BD300315F75 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 207D637C2FA37BD300315F75 /* Icon.png */; };
+		207D637F2FA37BD300315F75 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 207D637E2FA37BD300315F75 /* Style.css */; };
+		207D63812FA37BD300315F75 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 207D63802FA37BD300315F75 /* Script.js */; };
+		207D63832FA37BD300315F75 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207D63822FA37BD300315F75 /* ViewController.swift */; };
+		207D63862FA37BD300315F75 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 207D63842FA37BD300315F75 /* Main.storyboard */; };
+		207D63882FA37BD300315F75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 207D63872FA37BD300315F75 /* Assets.xcassets */; };
+		207D638F2FA37BD400315F75 /* XVDL Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 207D638E2FA37BD400315F75 /* XVDL Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		207D63942FA37BD400315F75 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 207D63932FA37BD400315F75 /* SafariWebExtensionHandler.swift */; };
+		207D63A62FA37BD400315F75 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = 207D63A02FA37BD400315F75 /* styles.css */; };
+		207D63A72FA37BD400315F75 /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = 207D63A12FA37BD400315F75 /* background.js */; };
+		207D63A82FA37BD400315F75 /* injected.js in Resources */ = {isa = PBXBuildFile; fileRef = 207D63A22FA37BD400315F75 /* injected.js */; };
+		207D63A92FA37BD400315F75 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = 207D63A32FA37BD400315F75 /* icons */; };
+		207D63AA2FA37BD400315F75 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 207D63A42FA37BD400315F75 /* manifest.json */; };
+		207D63AB2FA37BD400315F75 /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = 207D63A52FA37BD400315F75 /* content.js */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		207D63902FA37BD400315F75 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 207D636B2FA37BD300315F75 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 207D638D2FA37BD400315F75;
+			remoteInfo = "XVDL Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		207D639B2FA37BD400315F75 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				207D638F2FA37BD400315F75 /* XVDL Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		207D63732FA37BD300315F75 /* XVDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XVDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		207D63762FA37BD300315F75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		207D637A2FA37BD300315F75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		207D637C2FA37BD300315F75 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		207D637E2FA37BD300315F75 /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		207D63802FA37BD300315F75 /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		207D63822FA37BD300315F75 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		207D63852FA37BD300315F75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		207D63872FA37BD300315F75 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		207D63892FA37BD300315F75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		207D638E2FA37BD400315F75 /* XVDL Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "XVDL Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		207D63932FA37BD400315F75 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		207D63952FA37BD400315F75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		207D63A02FA37BD400315F75 /* styles.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = styles.css; path = ../../../extension/styles.css; sourceTree = "<group>"; };
+		207D63A12FA37BD400315F75 /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = background.js; path = ../../../extension/background.js; sourceTree = "<group>"; };
+		207D63A22FA37BD400315F75 /* injected.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = injected.js; path = ../../../extension/injected.js; sourceTree = "<group>"; };
+		207D63A32FA37BD400315F75 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../../extension/icons; sourceTree = "<group>"; };
+		207D63A42FA37BD400315F75 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../../extension/manifest.json; sourceTree = "<group>"; };
+		207D63A52FA37BD400315F75 /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = ../../../extension/content.js; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		207D63702FA37BD300315F75 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		207D638B2FA37BD400315F75 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		207D636A2FA37BD300315F75 = {
+			isa = PBXGroup;
+			children = (
+				207D63752FA37BD300315F75 /* XVDL */,
+				207D63922FA37BD400315F75 /* XVDL Extension */,
+				207D63742FA37BD300315F75 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		207D63742FA37BD300315F75 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				207D63732FA37BD300315F75 /* XVDL.app */,
+				207D638E2FA37BD400315F75 /* XVDL Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		207D63752FA37BD300315F75 /* XVDL */ = {
+			isa = PBXGroup;
+			children = (
+				207D63762FA37BD300315F75 /* AppDelegate.swift */,
+				207D63822FA37BD300315F75 /* ViewController.swift */,
+				207D63842FA37BD300315F75 /* Main.storyboard */,
+				207D63872FA37BD300315F75 /* Assets.xcassets */,
+				207D63892FA37BD300315F75 /* Info.plist */,
+				207D63782FA37BD300315F75 /* Resources */,
+			);
+			path = XVDL;
+			sourceTree = "<group>";
+		};
+		207D63782FA37BD300315F75 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				207D63792FA37BD300315F75 /* Main.html */,
+				207D637C2FA37BD300315F75 /* Icon.png */,
+				207D637E2FA37BD300315F75 /* Style.css */,
+				207D63802FA37BD300315F75 /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		207D63922FA37BD400315F75 /* XVDL Extension */ = {
+			isa = PBXGroup;
+			children = (
+				207D639F2FA37BD400315F75 /* Resources */,
+				207D63932FA37BD400315F75 /* SafariWebExtensionHandler.swift */,
+				207D63952FA37BD400315F75 /* Info.plist */,
+			);
+			path = "XVDL Extension";
+			sourceTree = "<group>";
+		};
+		207D639F2FA37BD400315F75 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				207D63A02FA37BD400315F75 /* styles.css */,
+				207D63A12FA37BD400315F75 /* background.js */,
+				207D63A22FA37BD400315F75 /* injected.js */,
+				207D63A32FA37BD400315F75 /* icons */,
+				207D63A42FA37BD400315F75 /* manifest.json */,
+				207D63A52FA37BD400315F75 /* content.js */,
+			);
+			name = Resources;
+			path = "XVDL Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		207D63722FA37BD300315F75 /* XVDL */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 207D639C2FA37BD400315F75 /* Build configuration list for PBXNativeTarget "XVDL" */;
+			buildPhases = (
+				207D636F2FA37BD300315F75 /* Sources */,
+				207D63702FA37BD300315F75 /* Frameworks */,
+				207D63712FA37BD300315F75 /* Resources */,
+				207D639B2FA37BD400315F75 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				207D63912FA37BD400315F75 /* PBXTargetDependency */,
+			);
+			name = XVDL;
+			packageProductDependencies = (
+			);
+			productName = XVDL;
+			productReference = 207D63732FA37BD300315F75 /* XVDL.app */;
+			productType = "com.apple.product-type.application";
+		};
+		207D638D2FA37BD400315F75 /* XVDL Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 207D63982FA37BD400315F75 /* Build configuration list for PBXNativeTarget "XVDL Extension" */;
+			buildPhases = (
+				207D638A2FA37BD400315F75 /* Sources */,
+				207D638B2FA37BD400315F75 /* Frameworks */,
+				207D638C2FA37BD400315F75 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "XVDL Extension";
+			packageProductDependencies = (
+			);
+			productName = "XVDL Extension";
+			productReference = 207D638E2FA37BD400315F75 /* XVDL Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		207D636B2FA37BD300315F75 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2640;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					207D63722FA37BD300315F75 = {
+						CreatedOnToolsVersion = 26.4.1;
+					};
+					207D638D2FA37BD400315F75 = {
+						CreatedOnToolsVersion = 26.4.1;
+					};
+				};
+			};
+			buildConfigurationList = 207D636E2FA37BD300315F75 /* Build configuration list for PBXProject "XVDL" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 207D636A2FA37BD300315F75;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 207D63742FA37BD300315F75 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				207D63722FA37BD300315F75 /* XVDL */,
+				207D638D2FA37BD400315F75 /* XVDL Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		207D63712FA37BD300315F75 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				207D637D2FA37BD300315F75 /* Icon.png in Resources */,
+				207D63862FA37BD300315F75 /* Main.storyboard in Resources */,
+				207D63812FA37BD300315F75 /* Script.js in Resources */,
+				207D637B2FA37BD300315F75 /* Main.html in Resources */,
+				207D63882FA37BD300315F75 /* Assets.xcassets in Resources */,
+				207D637F2FA37BD300315F75 /* Style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		207D638C2FA37BD400315F75 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				207D63AB2FA37BD400315F75 /* content.js in Resources */,
+				207D63A72FA37BD400315F75 /* background.js in Resources */,
+				207D63A92FA37BD400315F75 /* icons in Resources */,
+				207D63AA2FA37BD400315F75 /* manifest.json in Resources */,
+				207D63A82FA37BD400315F75 /* injected.js in Resources */,
+				207D63A62FA37BD400315F75 /* styles.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		207D636F2FA37BD300315F75 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				207D63832FA37BD300315F75 /* ViewController.swift in Sources */,
+				207D63772FA37BD300315F75 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		207D638A2FA37BD400315F75 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				207D63942FA37BD400315F75 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		207D63912FA37BD400315F75 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 207D638D2FA37BD400315F75 /* XVDL Extension */;
+			targetProxy = 207D63902FA37BD400315F75 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		207D63792FA37BD300315F75 /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				207D637A2FA37BD300315F75 /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		207D63842FA37BD300315F75 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				207D63852FA37BD300315F75 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		207D63962FA37BD400315F75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		207D63972FA37BD400315F75 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		207D63992FA37BD400315F75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "XVDL Extension/XVDL Extension.entitlements";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "XVDL Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "XVDL Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.realazy.xvdl.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		207D639A2FA37BD400315F75 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "XVDL Extension/XVDL Extension.entitlements";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "XVDL Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "XVDL Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.realazy.xvdl.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		207D639D2FA37BD400315F75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = XVDL/XVDL.entitlements;
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = XVDL/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = XVDL;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.realazy.xvdl;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		207D639E2FA37BD400315F75 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = XVDL/XVDL.entitlements;
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = XVDL/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = XVDL;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.realazy.xvdl;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		207D636E2FA37BD300315F75 /* Build configuration list for PBXProject "XVDL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				207D63962FA37BD400315F75 /* Debug */,
+				207D63972FA37BD400315F75 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		207D63982FA37BD400315F75 /* Build configuration list for PBXNativeTarget "XVDL Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				207D63992FA37BD400315F75 /* Debug */,
+				207D639A2FA37BD400315F75 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		207D639C2FA37BD400315F75 /* Build configuration list for PBXNativeTarget "XVDL" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				207D639D2FA37BD400315F75 /* Debug */,
+				207D639E2FA37BD400315F75 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 207D636B2FA37BD300315F75 /* Project object */;
+}

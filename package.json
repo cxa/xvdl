@@ -1,0 +1,15 @@
+{
+  "name": "xvdl",
+  "version": "260430.0",
+  "private": true,
+  "description": "macOS Safari Web Extension for downloading videos from X/Twitter posts.",
+  "scripts": {
+    "validate": "node tools/validate-extension.mjs",
+    "validate:commit": "node tools/validate-commit-message.mjs",
+    "release:prepare": "node tools/prepare-release.mjs",
+    "package:safari": "node tools/package-safari.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

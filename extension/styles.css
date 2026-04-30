@@ -1,0 +1,134 @@
+.xvdl-video-overlay-host {
+  position: relative !important;
+}
+
+.xvdl-download-button {
+  all: unset;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font: 700 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  gap: 5px;
+  height: 28px;
+  justify-content: center;
+  letter-spacing: 0;
+  padding: 0 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    opacity 120ms ease,
+    transform 120ms ease;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 2147483647;
+}
+
+.xvdl-download-button svg {
+  display: block;
+  flex: 0 0 auto;
+  height: 15px;
+  pointer-events: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  width: 15px;
+}
+
+.xvdl-download-button span {
+  pointer-events: none;
+}
+
+.xvdl-download-button:hover {
+  background: rgba(29, 155, 240, 0.9);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+}
+
+.xvdl-download-button:focus-visible {
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.28),
+    0 0 0 2px rgba(29, 155, 240, 0.55);
+}
+
+.xvdl-download-button[aria-disabled="true"],
+.xvdl-download-button--pending {
+  cursor: default;
+  opacity: 0.62;
+}
+
+.xvdl-download-button[aria-disabled="true"]:hover,
+.xvdl-download-button--pending:hover {
+  background: rgba(0, 0, 0, 0.66);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+}
+
+.xvdl-download-button--busy {
+  opacity: 0.72;
+  transform: scale(0.94);
+}
+
+.xvdl-download-button[data-xvdl-flash="done"] {
+  background: rgba(0, 186, 124, 0.92);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.xvdl-download-button[data-xvdl-flash="error"] {
+  background: rgba(244, 33, 46, 0.92);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.xvdl-toast {
+  backdrop-filter: blur(14px);
+  background: rgba(15, 20, 25, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  bottom: 10px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.32);
+  box-sizing: border-box;
+  color: #ffffff;
+  display: block;
+  font: 600 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  left: 10px;
+  letter-spacing: 0;
+  max-height: min(42%, 112px);
+  opacity: 0;
+  overflow: auto;
+  padding: 10px 14px;
+  pointer-events: none;
+  position: absolute;
+  right: 10px;
+  text-align: center;
+  transform: translateY(8px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+  white-space: normal;
+  word-break: break-word;
+  z-index: 2147483647;
+}
+
+.xvdl-toast--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.xvdl-toast[data-xvdl-state="done"] {
+  border-color: rgba(0, 186, 124, 0.5);
+}
+
+.xvdl-toast[data-xvdl-state="error"] {
+  border-color: rgba(244, 33, 46, 0.58);
+}

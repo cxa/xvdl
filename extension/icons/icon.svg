@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">XVDL icon</title>
+  <desc id="desc">A white rounded square with a refined gradient X-shaped download mark.</desc>
+  <defs>
+    <linearGradient id="mark-gradient" x1="40" y1="28" x2="90" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#101828"/>
+      <stop offset="0.46" stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="108" height="108" rx="27" fill="#FFFFFF" stroke="#E4E7EC" stroke-width="2"/>
+  <g fill="none" stroke="url(#mark-gradient)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 28v29" stroke-width="11"/>
+    <path d="M43 48 64 69l21-21" stroke-width="11"/>
+    <path d="M38 95 54 79" stroke-width="11"/>
+    <path d="M74 79 90 95" stroke-width="11"/>
+  </g>
+</svg>

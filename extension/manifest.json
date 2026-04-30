@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "XVDL",
+  "version": "260430.0",
+  "description": "Adds a video download button to X/Twitter posts in Safari on macOS.",
+  "permissions": [
+    "nativeMessaging"
+  ],
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png",
+    "256": "icons/icon-256.png"
+  },
+  "host_permissions": [
+    "https://x.com/*",
+    "https://twitter.com/*",
+    "https://*.twitter.com/*",
+    "https://video.twimg.com/*",
+    "https://pbs.twimg.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://x.com/*",
+        "https://twitter.com/*",
+        "https://*.twitter.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "injected.js"
+      ],
+      "matches": [
+        "https://x.com/*",
+        "https://twitter.com/*",
+        "https://*.twitter.com/*"
+      ]
+    }
+  ]
+}
