@@ -74,7 +74,9 @@ async function updateReadme(version) {
 
 async function writeReleaseNotes(version) {
   const path = join(root, "RELEASE_NOTES.md");
-  const notes = `## What's Changed
+  const notes = `# XVDL v${version}
+
+## What's Changed
 
 - Initial macOS Safari Web Extension for adding an XVDL download button to X/Twitter videos.
 - Saves direct MP4 variants to the macOS Downloads folder through the native Safari app extension.

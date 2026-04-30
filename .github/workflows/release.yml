@@ -196,11 +196,14 @@ jobs:
             echo "::error::RELEASE_NOTES.md is missing or empty"
             exit 1
           fi
+          GITHUB_RELEASE_NOTES="$RUNNER_TEMP/release-notes.md"
+          awk 'NR == 1 && /^# / { skip_blank = 1; next } skip_blank && /^$/ { skip_blank = 0; next } { skip_blank = 0; print }' "$RELEASE_NOTES" > "$GITHUB_RELEASE_NOTES"
 
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_TAG" --notes-file "$GITHUB_RELEASE_NOTES"
             gh release upload "$RELEASE_TAG" "$FINAL_ZIP" "$CHECKSUM_FILE" --clobber
           else
             gh release create "$RELEASE_TAG" "$FINAL_ZIP" "$CHECKSUM_FILE" \
               --title "XVDL $RELEASE_TAG" \
-              --notes-file "$RELEASE_NOTES"
+              --notes-file "$GITHUB_RELEASE_NOTES"
           fi
