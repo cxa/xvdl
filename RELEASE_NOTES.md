@@ -1,15 +1,14 @@
-# XVDL v260430.0
+# XVDL v260501.0
 
 ## What's Changed
 
-- Adds an XVDL download button to X/Twitter videos in Safari.
-- Saves direct MP4 variants to the macOS Downloads folder through the native Safari app extension.
-- Shows download success or failure feedback inside the video container.
-- Supports Safari web apps created with Add to Dock after enabling the extension for that web app.
+- Keeps the XVDL video download button visible so it is easier to find.
+- Changes the download icon into a spinner while a download is in progress.
+- Preserves in-video success and failure feedback after the download finishes.
 
 ## Install
 
-1. Download `XVDL-260430.0-macos.zip` from this release.
+1. Download `XVDL-260501.0-macos.zip` from this release.
 2. Unzip it and move `XVDL.app` to `/Applications`.
 3. Open `XVDL.app` once.
 4. Enable XVDL in `Safari > Settings > Extensions`.

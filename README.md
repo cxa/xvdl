@@ -7,7 +7,7 @@ XVDL is a macOS Safari extension that adds an `XVDL` button to videos in X/Twitt
 
 ## Install
 
-1. Download `XVDL-260430.0-macos.zip` from GitHub Releases.
+1. Download `XVDL-260501.0-macos.zip` from GitHub Releases.
 2. Unzip it.
 3. Move `XVDL.app` to `/Applications`.
 4. Open `XVDL.app` once.
