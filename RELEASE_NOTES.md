@@ -1,5 +1,3 @@
-# XVDL v260430.0
-
 ## What's Changed
 
 - Adds an XVDL download button to X/Twitter videos in Safari.
