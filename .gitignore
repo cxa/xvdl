@@ -1,5 +1,3 @@
 .DS_Store
 build/
-Safari/XVDL/xcuserdata/
-Safari/XVDL/*.xcworkspace/xcuserdata/
-Safari/XVDL/*.xcodeproj/xcuserdata/
+xcuserdata/
