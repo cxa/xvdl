@@ -8,6 +8,7 @@ const manifestPath = join(extensionDir, "manifest.json");
 const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const pkg = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 const packageSafariScript = await readFile(join(root, "tools", "package-safari.mjs"), "utf8");
+const homebrewCask = await readFile(join(root, "Casks", "xvdl.rb"), "utf8");
 
 const requiredFiles = [
   "background.js",
@@ -24,6 +25,17 @@ assert(manifest.manifest_version === 3, "manifest_version must be 3");
 assert(manifest.name === "XVDL", "extension name must be XVDL");
 assert(/^\d{6}\.\d+$/.test(pkg.version), "package version must use yymmdd.patch format");
 assert(manifest.version === pkg.version, "manifest version must match package.json version");
+assert(homebrewCask.includes(`version "${pkg.version}"`), "Homebrew cask version must match package.json version");
+assert(
+  /sha256 (?::no_check|"[a-f0-9]{64}")/i.test(homebrewCask),
+  "Homebrew cask must define a SHA-256 checksum or :no_check"
+);
+assert(
+  homebrewCask.includes('url "https://github.com/cxa/xvdl/releases/download/v#{version}/XVDL-#{version}-macos.zip"'),
+  "Homebrew cask must install the release macOS zip"
+);
+assert(homebrewCask.includes('app "XVDL.app"'), "Homebrew cask must install XVDL.app");
+assert(homebrewCask.includes('depends_on macos: ">= :sequoia"'), "Homebrew cask must require macOS Sequoia or newer");
 assert(/macOS/i.test(manifest.description || ""), "manifest description should make macOS scope clear");
 assert(manifest.icons?.["128"] === "icons/icon-128.png", "128px icon is required");
 assert(manifest.permissions?.includes("nativeMessaging"), "nativeMessaging permission is required");

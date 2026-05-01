@@ -8,6 +8,18 @@
 
 ## Install
 
+### Homebrew
+
+```sh
+brew tap cxa/xvdl https://github.com/cxa/xvdl
+brew install --cask xvdl
+open -a XVDL
+```
+
+Then enable XVDL in `Safari > Settings > Extensions` and grant website access for `x.com` and `twitter.com`.
+
+### Manual
+
 1. Download `XVDL-260501.0-macos.zip` from this release.
 2. Unzip it and move `XVDL.app` to `/Applications`.
 3. Open `XVDL.app` once.

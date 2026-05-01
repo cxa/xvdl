@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
+import { updateHomebrewCask } from "./update-homebrew-cask.mjs";
 
 const root = new URL("..", import.meta.url).pathname;
 const releaseDate = process.argv[2] || todayYYMMDD();
@@ -19,6 +20,7 @@ await updateJson(join(root, "extension", "manifest.json"), (manifest) => {
 
 await updateReadme(releaseVersion);
 await writeReleaseNotes(releaseVersion);
+await updateHomebrewCask({ version: releaseVersion, sha256: ":no_check" });
 
 console.log(`Prepared ${releaseTag}`);
 
@@ -84,6 +86,18 @@ async function writeReleaseNotes(version) {
 - Supports Safari web apps created with Add to Dock after enabling the extension for that web app.
 
 ## Install
+
+### Homebrew
+
+\`\`\`sh
+brew tap cxa/xvdl https://github.com/cxa/xvdl
+brew install --cask xvdl
+open -a XVDL
+\`\`\`
+
+Then enable XVDL in \`Safari > Settings > Extensions\` and grant website access for \`x.com\` and \`twitter.com\`.
+
+### Manual
 
 1. Download \`XVDL-${version}-macos.zip\` from this release.
 2. Unzip it and move \`XVDL.app\` to \`/Applications\`.
