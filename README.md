@@ -19,7 +19,7 @@ Then open `Safari > Settings > Extensions`, enable XVDL, and grant website acces
 
 ### Manual
 
-1. Download `XVDL-260501.0-macos.zip` from GitHub Releases.
+1. Download `XVDL-260502.0-macos.zip` from GitHub Releases.
 2. Unzip it.
 3. Move `XVDL.app` to `/Applications`.
 4. Open `XVDL.app` once.
