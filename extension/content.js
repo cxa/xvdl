@@ -122,6 +122,8 @@
     for (const article of document.querySelectorAll('article[data-testid="tweet"], article')) {
       enhanceArticle(article);
     }
+
+    enhanceVideoThumbnails();
   }
 
   function enhanceArticle(article) {
@@ -157,6 +159,38 @@
 
     if (button.parentElement !== target) {
       target.append(button);
+    }
+  }
+
+  function enhanceVideoThumbnails() {
+    for (const link of document.querySelectorAll('a[href*="/status/"]')) {
+      enhanceVideoThumbnail(link);
+    }
+  }
+
+  function enhanceVideoThumbnail(link) {
+    if (!(link instanceof HTMLElement) || link.closest("article")) {
+      return;
+    }
+
+    const tweetId = getTweetIdFromUrl(link.href);
+    const existing = link.querySelector(":scope .xvdl-download-button--thumbnail");
+    const media = tweetId ? mediaByTweetId.get(tweetId) : null;
+
+    if (!tweetId || !isVideoThumbnailLink(link, media)) {
+      existing?.remove();
+      return;
+    }
+
+    link.classList.add("xvdl-video-overlay-host", "xvdl-thumbnail-overlay-host");
+
+    const button = existing || createButton();
+    button.classList.add("xvdl-download-button--thumbnail");
+    button.dataset.tweetId = tweetId;
+    updateButton(button, media, tweetId);
+
+    if (button.parentElement !== link) {
+      link.append(button);
     }
   }
 
@@ -309,6 +343,43 @@
     return null;
   }
 
+  function isVideoThumbnailLink(link, media) {
+    if (!isMediaThumbnailLink(link)) {
+      return false;
+    }
+
+    return Boolean(
+      chooseBestVariant(media) ||
+        linkPathLooksVideo(link.href) ||
+        hasDurationText(link) ||
+        hasVideoLabel(link)
+    );
+  }
+
+  function isMediaThumbnailLink(link) {
+    return Boolean(
+      link.querySelector("img, video") ||
+        /\/(?:photo|video)\/\d+(?:\?|$|\/)/i.test(new URL(link.href, location.origin).pathname)
+    );
+  }
+
+  function linkPathLooksVideo(href) {
+    return /\/video\/\d+(?:\?|$|\/)/i.test(new URL(href, location.origin).pathname);
+  }
+
+  function hasDurationText(element) {
+    return /\b\d{1,2}:\d{2}(?::\d{2})?\b/.test(element.textContent || "");
+  }
+
+  function hasVideoLabel(element) {
+    const labeled = [element, ...element.querySelectorAll("[aria-label], [data-testid]")];
+    return labeled.some((node) => {
+      const ariaLabel = node.getAttribute?.("aria-label") || "";
+      const testId = node.getAttribute?.("data-testid") || "";
+      return /video|play/i.test(`${ariaLabel} ${testId}`);
+    });
+  }
+
   function normalizeVideoHost(candidate, article) {
     let host = candidate;
 
@@ -374,7 +445,7 @@
   }
 
   function chooseBestVariant(media) {
-    return [...(media.variants || [])].filter(isMp4Variant).sort(compareVariants)[0] || null;
+    return [...(media?.variants || [])].filter(isMp4Variant).sort(compareVariants)[0] || null;
   }
 
   function compareVariants(a, b) {

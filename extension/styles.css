@@ -50,6 +50,29 @@
   pointer-events: none;
 }
 
+.xvdl-download-button--thumbnail {
+  height: 26px;
+  padding: 0 8px;
+  right: 8px;
+  top: 8px;
+}
+
+.xvdl-download-button--thumbnail svg {
+  height: 14px;
+  width: 14px;
+}
+
+@media (max-width: 520px) {
+  .xvdl-download-button--thumbnail {
+    padding: 0;
+    width: 28px;
+  }
+
+  .xvdl-download-button--thumbnail span {
+    display: none;
+  }
+}
+
 .xvdl-spinner-icon {
   display: none !important;
   stroke-dasharray: 38;
