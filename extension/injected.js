@@ -6,6 +6,56 @@
   window.__xvdlProbeInstalled = true;
 
   const MAX_RESPONSE_CHARS = 10_000_000;
+  const X_BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA";
+  const TWEET_RESULT_QUERY_ID = "R4GaE7QczPF2R7wRxgu70w";
+  const TWEET_RESULT_FEATURES = [
+    "creator_subscriptions_tweet_preview_api_enabled",
+    "premium_content_api_read_enabled",
+    "communities_web_enable_tweet_community_results_fetch",
+    "c9s_tweet_anatomy_moderator_badge_enabled",
+    "responsive_web_grok_analyze_button_fetch_trends_enabled",
+    "responsive_web_grok_analyze_post_followups_enabled",
+    "responsive_web_jetfuel_frame",
+    "responsive_web_grok_share_attachment_enabled",
+    "responsive_web_grok_annotations_enabled",
+    "articles_preview_enabled",
+    "responsive_web_edit_tweet_api_enabled",
+    "graphql_is_translatable_rweb_tweet_is_translatable_enabled",
+    "view_counts_everywhere_api_enabled",
+    "longform_notetweets_consumption_enabled",
+    "responsive_web_twitter_article_tweet_consumption_enabled",
+    "content_disclosure_indicator_enabled",
+    "content_disclosure_ai_generated_indicator_enabled",
+    "responsive_web_grok_show_grok_translated_post",
+    "responsive_web_grok_analysis_button_from_backend",
+    "post_ctas_fetch_enabled",
+    "rweb_cashtags_enabled",
+    "freedom_of_speech_not_reach_fetch_enabled",
+    "standardized_nudges_misinfo",
+    "tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled",
+    "longform_notetweets_rich_text_read_enabled",
+    "longform_notetweets_inline_media_enabled",
+    "profile_label_improvements_pcf_label_in_post_enabled",
+    "responsive_web_profile_redirect_enabled",
+    "rweb_tipjar_consumption_enabled",
+    "verified_phone_label_enabled",
+    "responsive_web_grok_image_annotation_enabled",
+    "responsive_web_grok_imagine_annotation_enabled",
+    "responsive_web_grok_community_note_auto_translation_is_enabled",
+    "responsive_web_graphql_skip_user_profile_image_extensions_enabled",
+    "responsive_web_graphql_timeline_navigation_enabled",
+    "responsive_web_enhance_cards_enabled"
+  ];
+  const TWEET_RESULT_FIELD_TOGGLES = [
+    "withArticleRichContentState",
+    "withArticlePlainText",
+    "withArticleSummaryText",
+    "withArticleVoiceOver",
+    "withGrokAnalyze",
+    "withDisallowedReplyControls",
+    "withPayments",
+    "withAuxiliaryUserLabels"
+  ];
   const originalFetch = window.fetch;
   const originalOpen = XMLHttpRequest.prototype.open;
   const originalSend = XMLHttpRequest.prototype.send;
@@ -28,6 +78,7 @@
 
   observeResources();
   inspectExistingScripts();
+  window.addEventListener("message", handleContentMessage, false);
 
   function getRequestUrl(request) {
     if (typeof request === "string") {
@@ -78,6 +129,57 @@
     if (items.length > 0) {
       emitItems(items);
     }
+  }
+
+  function handleContentMessage(event) {
+    if (event.source !== window || event.data?.source !== "xvdl-content") {
+      return;
+    }
+
+    if (event.data.type === "resolve-tweet-media" && toTweetId(event.data.tweetId)) {
+      resolveTweetMedia(event.data.tweetId).catch((error) => {
+        emitMediaError(event.data.tweetId, error?.message || String(error));
+      });
+    }
+  }
+
+  async function resolveTweetMedia(tweetId) {
+    const variables = {
+      tweetId,
+      withCommunity: true,
+      includePromotedContent: false,
+      withVoice: false
+    };
+    const features = Object.fromEntries(TWEET_RESULT_FEATURES.map((key) => [key, true]));
+    const fieldToggles = Object.fromEntries(TWEET_RESULT_FIELD_TOGGLES.map((key) => [key, true]));
+    const url = `/i/api/graphql/${TWEET_RESULT_QUERY_ID}/TweetResultByRestId?${new URLSearchParams({
+      variables: JSON.stringify(variables),
+      features: JSON.stringify(features),
+      fieldToggles: JSON.stringify(fieldToggles)
+    })}`;
+
+    const response = await originalFetch(url, {
+      credentials: "include",
+      headers: {
+        authorization: `Bearer ${X_BEARER_TOKEN}`,
+        "x-csrf-token": decodeURIComponent(getCookieValue("ct0")),
+        "x-twitter-active-user": "yes",
+        "x-twitter-auth-type": "OAuth2Session",
+        "x-twitter-client-language": document.documentElement.lang || "en"
+      }
+    });
+
+    const text = await response.text();
+    if (!response.ok) {
+      throw new Error(`Tweet media request failed with HTTP ${response.status}.`);
+    }
+
+    const items = extractItemsFromText(text, url).filter((item) => item.tweetId === tweetId);
+    if (items.length === 0) {
+      throw new Error("Tweet media request did not include downloadable video variants.");
+    }
+
+    emitItems(items);
   }
 
   function inspectExistingScripts() {
@@ -429,6 +531,20 @@
       type: "media-items",
       items
     }, "*");
+  }
+
+  function emitMediaError(tweetId, error) {
+    window.postMessage({
+      source: "xvdl-page",
+      type: "media-error",
+      tweetId,
+      error
+    }, "*");
+  }
+
+  function getCookieValue(name) {
+    const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return document.cookie.match(new RegExp(`(?:^|; )${escapedName}=([^;]*)`))?.[1] || "";
   }
 
   function noop() {}

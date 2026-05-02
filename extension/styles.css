@@ -62,6 +62,11 @@
   width: 14px;
 }
 
+.xvdl-download-button--detail {
+  right: 12px;
+  top: 48px;
+}
+
 @media (max-width: 520px) {
   .xvdl-download-button--thumbnail {
     padding: 0;

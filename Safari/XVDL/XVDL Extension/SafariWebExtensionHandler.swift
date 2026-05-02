@@ -8,6 +8,7 @@
 import Foundation
 import SafariServices
 import os.log
+import Darwin
 
 class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
 
@@ -57,7 +58,7 @@ class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
         }
 
         let filename = sanitizedFilename(payload["filename"] as? String)
-        guard let downloadsDirectory = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first else {
+        guard let downloadsDirectory = userDownloadsDirectory() else {
             complete(context, message: [
                 "ok": false,
                 "error": "Could not locate the Downloads folder."
@@ -140,6 +141,15 @@ class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
         }
 
         return destination
+    }
+
+    private func userDownloadsDirectory() -> URL? {
+        guard let passwd = getpwuid(getuid()), let home = passwd.pointee.pw_dir else {
+            return FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
+        }
+
+        return URL(fileURLWithPath: String(cString: home), isDirectory: true)
+            .appendingPathComponent("Downloads", isDirectory: true)
     }
 
     private func complete(_ context: NSExtensionContext, message: [String: Any]) {

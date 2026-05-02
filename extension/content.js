@@ -1,6 +1,7 @@
 (() => {
   const extensionApi = globalThis.browser ?? globalThis.chrome;
   const mediaByTweetId = new Map();
+  const mediaResolvers = new Map();
   const toastTimers = new WeakMap();
   let observer = null;
   let scanScheduled = false;
@@ -74,12 +75,16 @@
         const previous = mediaByTweetId.get(item.tweetId);
         const next = mergeMediaItem(previous, item);
         mediaByTweetId.set(item.tweetId, next);
+        resolveMediaRequest(item.tweetId, next);
         changed = true;
       }
 
       if (changed) {
         scheduleScan();
       }
+    }
+    if (event.data.type === "media-error" && event.data.tweetId) {
+      rejectMediaRequest(event.data.tweetId, new Error(event.data.error || "Could not load video data."));
     }
   }
 
@@ -123,6 +128,7 @@
       enhanceArticle(article);
     }
 
+    enhanceStandaloneVideoPlayers();
     enhanceVideoThumbnails();
   }
 
@@ -168,29 +174,60 @@
     }
   }
 
+  function enhanceStandaloneVideoPlayers() {
+    const tweetId = getTweetIdFromUrl(location.href);
+    if (!tweetId) {
+      return;
+    }
+
+    const media = mediaByTweetId.get(tweetId);
+    const candidates = document.querySelectorAll('[data-testid="videoPlayer"], video');
+
+    for (const candidate of candidates) {
+      const target = normalizeStandaloneVideoHost(candidate);
+      if (!target) {
+        continue;
+      }
+
+      target.classList.add("xvdl-video-overlay-host", "xvdl-detail-overlay-host");
+
+      const button = target.querySelector(":scope > .xvdl-download-button--detail") || createButton();
+      button.classList.add("xvdl-download-button--detail");
+      button.dataset.tweetId = tweetId;
+      updateButton(button, media, tweetId);
+
+      if (button.parentElement !== target) {
+        target.append(button);
+      }
+    }
+  }
+
   function enhanceVideoThumbnail(link) {
     if (!(link instanceof HTMLElement) || link.closest("article")) {
       return;
     }
 
     const tweetId = getTweetIdFromUrl(link.href);
-    const existing = link.querySelector(":scope .xvdl-download-button--thumbnail");
+    const target = findThumbnailOverlayHost(link);
+    const existing = target?.querySelector(":scope > .xvdl-download-button--thumbnail") || null;
+    const nested = link.querySelector(":scope .xvdl-download-button--thumbnail");
     const media = tweetId ? mediaByTweetId.get(tweetId) : null;
 
-    if (!tweetId || !isVideoThumbnailLink(link, media)) {
+    if (!tweetId || !target || !isVideoThumbnailLink(link, media)) {
       existing?.remove();
+      nested?.remove();
       return;
     }
 
-    link.classList.add("xvdl-video-overlay-host", "xvdl-thumbnail-overlay-host");
+    target.classList.add("xvdl-video-overlay-host", "xvdl-thumbnail-overlay-host");
 
-    const button = existing || createButton();
+    const button = existing || nested || createButton();
     button.classList.add("xvdl-download-button--thumbnail");
     button.dataset.tweetId = tweetId;
     updateButton(button, media, tweetId);
 
-    if (button.parentElement !== link) {
-      link.append(button);
+    if (button.parentElement !== target) {
+      target.append(button);
     }
   }
 
@@ -211,6 +248,10 @@
       "</svg>",
       "<span>XVDL</span>"
     ].join("");
+
+    for (const eventName of ["pointerdown", "pointerup", "mousedown", "mouseup", "touchstart", "touchend"]) {
+      button.addEventListener(eventName, stopButtonEvent, true);
+    }
 
     button.addEventListener("click", onDownloadClick, true);
     return button;
@@ -235,10 +276,10 @@
 
     const button = event.currentTarget;
     const tweetId = button.dataset.tweetId;
-    const media = mediaByTweetId.get(tweetId);
-    const variant = media ? chooseBestVariant(media) : null;
+    let media = mediaByTweetId.get(tweetId);
+    let variant = media ? chooseBestVariant(media) : null;
 
-    if (!tweetId || !variant) {
+    if (!tweetId) {
       flashButton(button, "pending");
       return;
     }
@@ -247,10 +288,21 @@
     const toastHost = button.parentElement instanceof HTMLElement ? button.parentElement : document.documentElement;
 
     try {
+      if (!variant) {
+        media = await requestTweetMedia(tweetId);
+        variant = media ? chooseBestVariant(media) : null;
+      }
+
+      if (!variant) {
+        flashButton(button, "pending");
+        showToast(toastHost, "Video URL is still loading. Try again in a moment.", "error");
+        return;
+      }
+
       const filename = buildFilename(tweetId, variant);
       const response = await saveMediaWithNativeApp(variant.url, filename);
       flashButton(button, "done");
-      showToast(toastHost, `Saved to Downloads: ${filenameFromPath(response.path) || filename}`, "done");
+      showToast(toastHost, `Saved to: ${response.path || filenameFromPath(response.path) || filename}`, "done");
     } catch (error) {
       console.warn("[XVDL] Direct video download failed.", error);
       flashButton(button, "error");
@@ -258,6 +310,10 @@
     } finally {
       button.classList.remove("xvdl-download-button--busy");
     }
+  }
+
+  function stopButtonEvent(event) {
+    event.stopPropagation();
   }
 
   async function saveMediaWithNativeApp(url, filename) {
@@ -276,6 +332,62 @@
     }
 
     return response;
+  }
+
+  function requestTweetMedia(tweetId) {
+    const cached = mediaByTweetId.get(tweetId);
+    if (chooseBestVariant(cached)) {
+      return Promise.resolve(cached);
+    }
+
+    const pending = mediaResolvers.get(tweetId);
+    if (pending) {
+      return pending.promise;
+    }
+
+    let timeout = 0;
+    const promise = new Promise((resolve, reject) => {
+      timeout = window.setTimeout(() => {
+        mediaResolvers.delete(tweetId);
+        reject(new Error("Timed out while loading video data."));
+      }, 7000);
+
+      mediaResolvers.set(tweetId, {
+        reject,
+        resolve,
+        timeout
+      });
+    });
+
+    window.postMessage({
+      source: "xvdl-content",
+      type: "resolve-tweet-media",
+      tweetId
+    }, "*");
+
+    return promise;
+  }
+
+  function resolveMediaRequest(tweetId, media) {
+    const pending = mediaResolvers.get(tweetId);
+    if (!pending) {
+      return;
+    }
+
+    window.clearTimeout(pending.timeout);
+    mediaResolvers.delete(tweetId);
+    pending.resolve(media);
+  }
+
+  function rejectMediaRequest(tweetId, error) {
+    const pending = mediaResolvers.get(tweetId);
+    if (!pending) {
+      return;
+    }
+
+    window.clearTimeout(pending.timeout);
+    mediaResolvers.delete(tweetId);
+    pending.reject(error);
   }
 
   function filenameFromPath(path) {
@@ -341,6 +453,59 @@
     }
 
     return null;
+  }
+
+  function normalizeStandaloneVideoHost(candidate) {
+    if (!(candidate instanceof HTMLElement) || candidate.closest("article")) {
+      return null;
+    }
+
+    const player = candidate.closest('[data-testid="videoPlayer"]');
+    if (player instanceof HTMLElement && !player.closest("article")) {
+      return player;
+    }
+
+    const video = candidate instanceof HTMLVideoElement ? candidate : candidate.querySelector("video");
+    if (!(video instanceof HTMLVideoElement)) {
+      return null;
+    }
+
+    let host = video.parentElement;
+    let depth = 0;
+
+    while (host instanceof HTMLElement && depth < 6) {
+      if (host.closest("article")) {
+        return null;
+      }
+
+      const rect = host.getBoundingClientRect();
+      if (rect.width > 120 && rect.height > 120) {
+        return host;
+      }
+
+      host = host.parentElement;
+      depth += 1;
+    }
+
+    return video.parentElement instanceof HTMLElement ? video.parentElement : null;
+  }
+
+  function findThumbnailOverlayHost(link) {
+    const linkRect = link.getBoundingClientRect();
+    let host = link.parentElement;
+    let depth = 0;
+
+    while (host instanceof HTMLElement && depth < 4) {
+      const hostRect = host.getBoundingClientRect();
+      if (hostRect.width >= linkRect.width * 0.9 && hostRect.height >= linkRect.height * 0.9) {
+        return host;
+      }
+
+      host = host.parentElement;
+      depth += 1;
+    }
+
+    return link.parentElement instanceof HTMLElement ? link.parentElement : null;
   }
 
   function isVideoThumbnailLink(link, media) {
