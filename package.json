@@ -4,7 +4,8 @@
   "private": true,
   "description": "macOS Safari Web Extension for downloading videos from X/Twitter posts.",
   "scripts": {
-    "validate": "node tools/validate-extension.mjs",
+    "validate": "node tools/validate-extension.mjs && node --test",
+    "test": "node --test",
     "validate:commit": "node tools/validate-commit-message.mjs",
     "homebrew:cask": "node tools/update-homebrew-cask.mjs",
     "release:prepare": "node tools/prepare-release.mjs",

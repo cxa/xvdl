@@ -174,12 +174,19 @@
       throw new Error(`Tweet media request failed with HTTP ${response.status}.`);
     }
 
-    const items = extractItemsFromText(text, url).filter((item) => item.tweetId === tweetId);
-    if (items.length === 0) {
+    const roots = findJsonObjects(text);
+    const items = extractItemsFromRoots(roots, url);
+    const directItems = items.filter((item) => item.tweetId === tweetId);
+    const quotedTweetIds = findQuotedTweetIds(roots, tweetId);
+    const quotedItems = items
+      .filter((item) => quotedTweetIds.has(item.tweetId))
+      .map((item) => ({ ...item, tweetId }));
+    const resolvedItems = directItems.length > 0 ? directItems : quotedItems;
+    if (resolvedItems.length === 0) {
       throw new Error("Tweet media request did not include downloadable video variants.");
     }
 
-    emitItems(items);
+    emitItems(resolvedItems);
   }
 
   function inspectExistingScripts() {
@@ -223,13 +230,68 @@
   }
 
   function extractItemsFromText(text, source) {
-    const items = [];
+    return extractItemsFromRoots(findJsonObjects(text), source);
+  }
 
-    for (const json of findJsonObjects(text)) {
-      items.push(...extractMediaItems(json, source));
+  function extractItemsFromRoots(roots, source) {
+    return dedupeItems(roots.flatMap((root) => extractMediaItems(root, source)));
+  }
+
+  function findQuotedTweetIds(roots, tweetId) {
+    const quotedTweetIds = new Set();
+    const seen = new WeakSet();
+
+    for (const root of roots) {
+      walk(root);
     }
 
-    return dedupeItems(items);
+    return quotedTweetIds;
+
+    function walk(value) {
+      if (!value || typeof value !== "object" || seen.has(value)) {
+        return;
+      }
+
+      seen.add(value);
+
+      if (getTweetId(value) === tweetId) {
+        addQuotedTweetId(value.quoted_status_id_str);
+        addQuotedTweetId(value.legacy?.quoted_status_id_str);
+        addQuotedTweetId(findFirstTweetId(value.quoted_status));
+        addQuotedTweetId(findFirstTweetId(value.quoted_status_result?.result));
+      }
+
+      for (const child of Object.values(value)) {
+        walk(child);
+      }
+    }
+
+    function addQuotedTweetId(value) {
+      const id = toTweetId(value);
+      if (id) {
+        quotedTweetIds.add(id);
+      }
+    }
+  }
+
+  function findFirstTweetId(value) {
+    if (!value || typeof value !== "object") {
+      return "";
+    }
+
+    const tweetId = getTweetId(value);
+    if (tweetId) {
+      return tweetId;
+    }
+
+    for (const child of Object.values(value)) {
+      const childTweetId = findFirstTweetId(child);
+      if (childTweetId) {
+        return childTweetId;
+      }
+    }
+
+    return "";
   }
 
   function findJsonObjects(text) {
