@@ -1,6 +1,6 @@
 cask "xvdl" do
   version "260907.0"
-  sha256 :no_check
+  sha256 "9bb9134a3fd8132d10a2f720b9ed605894f4ce80655111fada0cec7b024158d9"
 
   url "https://github.com/cxa/xvdl/releases/download/v#{version}/XVDL-#{version}-macos.zip"
   name "XVDL"
