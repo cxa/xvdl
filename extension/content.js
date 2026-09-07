@@ -275,6 +275,10 @@
     event.stopPropagation();
 
     const button = event.currentTarget;
+    if (button.classList.contains("xvdl-download-button--busy")) {
+      return;
+    }
+
     const tweetId = button.dataset.tweetId;
     let media = mediaByTweetId.get(tweetId);
     let variant = media ? chooseBestVariant(media) : null;
@@ -285,6 +289,7 @@
     }
 
     button.classList.add("xvdl-download-button--busy");
+    button.setAttribute("aria-busy", "true");
     const toastHost = button.parentElement instanceof HTMLElement ? button.parentElement : document.documentElement;
 
     try {
@@ -301,6 +306,11 @@
 
       const filename = buildFilename(tweetId, variant);
       const response = await saveMediaWithNativeApp(variant.url, filename);
+      if (response.status === "unknown") {
+        showToast(toastHost, "Download status unavailable. The video may still be downloading; check Downloads before retrying.", "unknown");
+        return;
+      }
+
       flashButton(button, "done");
       showToast(toastHost, `Saved to: ${response.path || filenameFromPath(response.path) || filename}`, "done");
     } catch (error) {
@@ -309,6 +319,7 @@
       showToast(toastHost, formatDownloadError(error), "error");
     } finally {
       button.classList.remove("xvdl-download-button--busy");
+      button.removeAttribute("aria-busy");
     }
   }
 
@@ -321,14 +332,39 @@
       throw new Error("Only direct MP4 variants can be downloaded.");
     }
 
-    const response = await extensionApi.runtime.sendMessage({
-      type: "xvdl-download",
-      url,
-      filename
+    const response = await new Promise((resolve) => {
+      const port = extensionApi.runtime.connect({ name: "xvdl-download" });
+      const onDisconnect = () => finish({ status: "unknown" });
+      // Safari unloads idle background workers even while a native reply is pending.
+      const keepalive = window.setInterval(() => send({ type: "xvdl-keepalive" }), 15_000);
+
+      function finish(result) {
+        window.clearInterval(keepalive);
+        port.onMessage.removeListener(finish);
+        port.onDisconnect.removeListener(onDisconnect);
+        port.disconnect();
+        resolve(result);
+      }
+
+      function send(message) {
+        try {
+          port.postMessage(message);
+        } catch {
+          onDisconnect();
+        }
+      }
+
+      port.onMessage.addListener(finish);
+      port.onDisconnect.addListener(onDisconnect);
+      send({ type: "xvdl-download", url, filename });
     });
 
-    if (!response?.ok) {
-      throw new Error(response?.error || "Native download failed.");
+    if (typeof response?.ok !== "boolean") {
+      return { status: "unknown" };
+    }
+
+    if (!response.ok) {
+      throw new Error(response.error || "Native download failed.");
     }
 
     return response;
