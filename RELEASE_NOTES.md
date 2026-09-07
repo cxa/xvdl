@@ -1,10 +1,10 @@
-# XVDL v260904.0
+# XVDL v260907.0
 
 ## What's Changed
 
-- Adds downloads for videos embedded in quoted X/Twitter posts.
-- Keeps media attached directly to the selected post as the preferred download source.
-- Adds regression coverage for both direct and quoted-video resolution.
+- Fixes false download failures for large videos by keeping the Safari extension active until the download result arrives.
+- Shows an unknown-status message when communication is interrupted, so an unconfirmed result is not reported as a failed download.
+- Prevents repeated clicks from starting another download while the current one is still pending.
 
 ## Install
 
@@ -20,7 +20,7 @@ Then enable XVDL in `Safari > Settings > Extensions` and grant website access fo
 
 ### Manual
 
-1. Download `XVDL-260904.0-macos.zip` from this release.
+1. Download `XVDL-260907.0-macos.zip` from this release.
 2. Unzip it and move `XVDL.app` to `/Applications`.
 3. Open `XVDL.app` once.
 4. Enable XVDL in `Safari > Settings > Extensions`.
