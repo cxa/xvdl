@@ -5,6 +5,10 @@
   const toastTimers = new WeakMap();
   let observer = null;
   let scanScheduled = false;
+  let activeDownloads = 0;
+  let updateCheckedAt = 0;
+  let updateNotice = null;
+  let updatePrompt = null;
 
   injectPageProbe();
   window.addEventListener("message", handlePageMessage, false);
@@ -27,6 +31,8 @@
     });
 
     window.addEventListener("locationchange", scheduleScan);
+    window.addEventListener("scroll", maybeShowUpdate, { passive: true });
+    document.addEventListener("visibilitychange", maybeShowUpdate);
     patchHistory();
   }
 
@@ -130,6 +136,70 @@
 
     enhanceStandaloneVideoPlayers();
     enhanceVideoThumbnails();
+    maybeShowUpdate();
+  }
+
+  function maybeShowUpdate() {
+    if (Date.now() - updateCheckedAt < 86_400_000 && !updateNotice || updatePrompt?.isConnected || activeDownloads || document.visibilityState !== "visible") {
+      return;
+    }
+    if (document.querySelector(".xvdl-toast--visible")) return;
+
+    const host = [...document.querySelectorAll(".xvdl-video-overlay-host")].find((element) => {
+      const rect = element.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < window.innerHeight;
+    });
+    if (!host) return;
+
+    if (updateNotice) {
+      showUpdatePrompt(host);
+    } else {
+      updateCheckedAt = Date.now();
+      extensionApi.runtime.sendMessage({ type: "xvdl-check-update" }).then((notice) => {
+        if (/^\d{6}\.\d+$/.test(notice?.version)) {
+          updateNotice = notice;
+          maybeShowUpdate();
+        }
+      }).catch(() => {});
+    }
+  }
+
+  function showUpdatePrompt(host) {
+    const prompt = document.createElement("div");
+    prompt.className = "xvdl-update-prompt";
+    prompt.setAttribute("role", "status");
+    prompt.setAttribute("aria-live", "polite");
+    const label = document.createElement("span");
+    label.textContent = `XVDL ${updateNotice.version} is available.`;
+    const update = document.createElement("button");
+    update.type = "button";
+    update.textContent = "Update";
+    const later = document.createElement("button");
+    later.type = "button";
+    later.textContent = "Later";
+    const dismiss = () => {
+      updateNotice = null;
+      prompt.remove();
+      updatePrompt = null;
+    };
+    later.addEventListener("click", dismiss);
+    update.addEventListener("click", async () => {
+      update.disabled = true;
+      try {
+        const response = await extensionApi.runtime.sendMessage({ type: "xvdl-open-update" });
+        if (!response?.ok) throw new Error("Could not open XVDL.");
+        dismiss();
+      } catch {
+        label.textContent = "Open XVDL from Applications and choose Check for Updates…";
+        update.disabled = false;
+      }
+    });
+    for (const type of ["click", "pointerdown", "pointerup", "mousedown", "mouseup", "touchstart", "touchend"]) {
+      prompt.addEventListener(type, stopButtonEvent);
+    }
+    prompt.append(label, update, later);
+    host.append(prompt);
+    updatePrompt = prompt;
   }
 
   function enhanceArticle(article) {
@@ -290,6 +360,9 @@
 
     button.classList.add("xvdl-download-button--busy");
     button.setAttribute("aria-busy", "true");
+    activeDownloads += 1;
+    updatePrompt?.remove();
+    updatePrompt = null;
     const toastHost = button.parentElement instanceof HTMLElement ? button.parentElement : document.documentElement;
 
     try {
@@ -320,6 +393,8 @@
     } finally {
       button.classList.remove("xvdl-download-button--busy");
       button.removeAttribute("aria-busy");
+      activeDownloads -= 1;
+      maybeShowUpdate();
     }
   }
 
@@ -450,6 +525,7 @@
     window.clearTimeout(toastTimers.get(toast));
     toastTimers.set(toast, window.setTimeout(() => {
       toast.classList.remove("xvdl-toast--visible");
+      maybeShowUpdate();
     }, state === "error" ? 6000 : 3600));
   }
 

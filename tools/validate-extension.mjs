@@ -24,6 +24,7 @@ const requiredFiles = [
 assert(manifest.manifest_version === 3, "manifest_version must be 3");
 assert(manifest.name === "XVDL", "extension name must be XVDL");
 assert(/^\d{6}\.\d+$/.test(pkg.version), "package version must use yymmdd.patch format");
+assert(Number.isSafeInteger(pkg.buildVersion) && pkg.buildVersion > 0, "buildVersion must be a positive integer");
 assert(manifest.version === pkg.version, "manifest version must match package.json version");
 assert(homebrewCask.includes(`version "${pkg.version}"`), "Homebrew cask version must match package.json version");
 assert(
@@ -39,6 +40,7 @@ assert(homebrewCask.includes('depends_on macos: ">= :sequoia"'), "Homebrew cask 
 assert(/macOS/i.test(manifest.description || ""), "manifest description should make macOS scope clear");
 assert(manifest.icons?.["128"] === "icons/icon-128.png", "128px icon is required");
 assert(manifest.permissions?.includes("nativeMessaging"), "nativeMessaging permission is required");
+assert(manifest.permissions?.includes("storage"), "storage permission is required for update reminders");
 assert(manifest.host_permissions?.includes("https://x.com/*"), "x.com host permission is required");
 assert(manifest.host_permissions?.includes("https://twitter.com/*"), "twitter.com host permission is required");
 assert(manifest.host_permissions?.includes("https://video.twimg.com/*"), "video.twimg.com host permission is required");

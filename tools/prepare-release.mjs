@@ -10,6 +10,7 @@ const releaseTag = `v${releaseVersion}`;
 
 await updateJson(join(root, "package.json"), (pkg) => {
   pkg.version = releaseVersion;
+  pkg.buildVersion += 1;
   return pkg;
 });
 

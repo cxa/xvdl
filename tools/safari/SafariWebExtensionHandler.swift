@@ -9,6 +9,7 @@ import Foundation
 import SafariServices
 import os.log
 import Darwin
+import AppKit
 
 class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
 
@@ -31,7 +32,7 @@ class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
 
         os_log(.default, "Received native message: %@ (profile: %@)", String(describing: message), profile?.uuidString ?? "none")
 
-        guard let payload = message as? [String: Any], payload["type"] as? String == "download" else {
+        guard let payload = message as? [String: Any] else {
             complete(context, message: [
                 "ok": false,
                 "error": "Unsupported native message."
@@ -39,7 +40,39 @@ class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
             return
         }
 
-        download(payload, context: context)
+        switch payload["type"] as? String {
+        case "download": download(payload, context: context)
+        case "check-update": checkForUpdate(context)
+        case "open-update": openUpdater(context)
+        default: complete(context, message: ["ok": false, "error": "Unsupported native message."])
+        }
+    }
+
+    private func checkForUpdate(_ context: NSExtensionContext) {
+        let url = URL(string: "https://github.com/cxa/xvdl/releases/latest/download/appcast.xml")!
+        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 8)
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard error == nil, (response as? HTTPURLResponse)?.statusCode == 200,
+                  let data, data.count < 1_000_000 else {
+                self.complete(context, message: ["ok": false])
+                return
+            }
+            let installedBuild = Int(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "") ?? 0
+            guard let version = UpdateFeed.availableVersion(in: data, installedBuild: installedBuild) else {
+                self.complete(context, message: ["ok": false])
+                return
+            }
+            self.complete(context, message: ["ok": true, "version": version])
+        }.resume()
+    }
+
+    private func openUpdater(_ context: NSExtensionContext) {
+        let appURL = Bundle.main.bundleURL.appendingPathComponent("../../..").standardizedFileURL
+        DispatchQueue.main.async {
+            NSWorkspace.shared.open([URL(string: "xvdl://check-for-updates")!], withApplicationAt: appURL, configuration: .init()) { _, error in
+                self.complete(context, message: ["ok": error == nil])
+            }
+        }
     }
 
     private func download(_ payload: [String: Any], context: NSExtensionContext) {
@@ -163,4 +196,38 @@ class SafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
         context.completeRequest(returningItems: [response], completionHandler: nil)
     }
 
+}
+
+private final class UpdateFeed: NSObject, XMLParserDelegate {
+    var build = ""
+    var version = ""
+    private var element = ""
+    private var finished = false
+
+    static func availableVersion(in data: Data, installedBuild: Int) -> String? {
+        let feed = UpdateFeed()
+        let parser = XMLParser(data: data)
+        parser.shouldResolveExternalEntities = false
+        parser.delegate = feed
+        guard parser.parse(), let build = Int(feed.build.trimmingCharacters(in: .whitespacesAndNewlines)), build > 0 else { return nil }
+        let version = feed.version.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard version.range(of: #"^\d{6}\.\d+$"#, options: .regularExpression) != nil else { return nil }
+        return build > installedBuild ? version : ""
+    }
+
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName: String?, attributes: [String: String]) {
+        element = elementName
+    }
+
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        guard !finished else { return }
+        if element == "sparkle:version" { build += string }
+        if element == "sparkle:shortVersionString" { version += string }
+    }
+
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName: String?) {
+        // ponytail: the release feed contains one stable update; select compatible items if channels are added.
+        if elementName == "item" { finished = true }
+        element = ""
+    }
 }

@@ -1,10 +1,13 @@
-# XVDL v260907.0
+# XVDL v260907.1
 
 ## What's Changed
 
-- Fixes false download failures for large videos by keeping the Safari extension active until the download result arrives.
-- Shows an unknown-status message when communication is interrupted, so an unconfirmed result is not reported as a failed download.
-- Prevents repeated clicks from starting another download while the current one is still pending.
+- Adds Sparkle updates with signed feeds and archives, plus **XVDL > Check for Updates…**.
+- Shows an **Update / Later** prompt near a visible video on X at most once a day, after downloads and their result messages finish.
+- Opens XVDL from the update prompt to download, verify, install, and relaunch the app.
+- Publishes a universal macOS app for Apple silicon and Intel.
+
+Existing users need to install this release once through Homebrew or by replacing `XVDL.app`. Subsequent releases can use the built-in updater.
 
 ## Install
 
@@ -20,7 +23,7 @@ Then enable XVDL in `Safari > Settings > Extensions` and grant website access fo
 
 ### Manual
 
-1. Download `XVDL-260907.0-macos.zip` from this release.
+1. Download `XVDL-260907.1-macos.zip` from this release.
 2. Unzip it and move `XVDL.app` to `/Applications`.
 3. Open `XVDL.app` once.
 4. Enable XVDL in `Safari > Settings > Extensions`.

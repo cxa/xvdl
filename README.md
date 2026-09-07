@@ -19,7 +19,7 @@ Then open `Safari > Settings > Extensions`, enable XVDL, and grant website acces
 
 ### Manual
 
-1. Download `XVDL-260907.0-macos.zip` from GitHub Releases.
+1. Download `XVDL-260907.1-macos.zip` from GitHub Releases.
 2. Unzip it.
 3. Move `XVDL.app` to `/Applications`.
 4. Open `XVDL.app` once.
@@ -35,11 +35,16 @@ Open a post on X/Twitter that contains a video. When XVDL can find a downloadabl
 
 The button only appears when the page exposes downloadable video data for that post.
 
+When an update is available, XVDL shows an **Update / Later** prompt near a visible video at most once a day. It waits until downloads and their status messages finish. **Update** opens XVDL, where Sparkle verifies and installs the release. You can also open XVDL and choose **XVDL > Check for Updates…**.
+
+Versions before 260907.1 need one manual or Homebrew upgrade to get the built-in updater.
+
 ## Privacy and Use
 
 - Only download videos that you own, have permission to save, or are otherwise authorized to download.
 - XVDL does not collect, store, sell, or transmit user data.
 - XVDL does not upload downloaded media or video metadata to any server.
+- Update checks contact GitHub for the public release feed; they do not include your X account, posts, or downloaded media.
 
 ## Build From Source
 
@@ -55,7 +60,9 @@ In Xcode, select your signing team, build and run `XVDL`, then enable the extens
 
 ## Release Maintenance
 
-`npm run release:prepare` updates the package, extension manifest, README, release notes, and Homebrew cask version. After the GitHub Release is published, run `npm run homebrew:cask -- --fetch-release-sha` to pin the cask checksum to the released zip.
+`npm run release:prepare` updates the package, extension manifest, README, release notes, and Homebrew cask version, and increments the numeric build version used by Sparkle. Run `npm run package:safari` to sync the Xcode project before building.
+
+The release workflow signs and notarizes the app, then signs `appcast.xml` and the update archive with the `SPARKLE_PRIVATE_KEY` repository secret. Keep that key backed up; its public key is pinned in `tools/safari/Info.plist`. After the GitHub Release is published, run `npm run homebrew:cask -- --fetch-release-sha` to pin the cask checksum to the released zip.
 
 ---
 

@@ -1,10 +1,11 @@
 {
   "manifest_version": 3,
   "name": "XVDL",
-  "version": "260907.0",
+  "version": "260907.1",
   "description": "Adds a video download button to X/Twitter posts in Safari on macOS.",
   "permissions": [
-    "nativeMessaging"
+    "nativeMessaging",
+    "storage"
   ],
   "icons": {
     "48": "icons/icon-48.png",
